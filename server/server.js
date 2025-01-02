@@ -5,8 +5,9 @@ const server = new WebSocket.Server({ port: 8080 });
 // Lista de clientes conectados
 const clients = new Set();
 
-server.on('connection', (socket) => {
-    console.log("Novo cliente conectado!");
+server.on('connection', (socket, req) => {
+    const clientIP = req.socket.remoteAddress;
+    console.log(`Novo cliente conectado! IP: ${clientIP}`);
     clients.add(socket);
 
     // Mensagem recebida do cliente
