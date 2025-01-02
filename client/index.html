@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat em Tempo Real</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        #chat {
+            width: 80%;
+            max-width: 600px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #messages {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        #messages li {
+            padding: 8px;
+            margin-bottom: 5px;
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        #messageForm {
+            display: flex;
+        }
+        #messageInput {
+            flex: 1;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        #sendButton {
+            padding: 8px 12px;
+            font-size: 16px;
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat">
+        <ul id="messages"></ul>
+        <form id="messageForm">
+            <input id="messageInput" type="text" placeholder="Digite sua mensagem" required />
+            <button id="sendButton" type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        const messages = document.getElementById('messages');
+        const messageForm = document.getElementById('messageForm');
+        const messageInput = document.getElementById('messageInput');
+
+        const socket = new WebSocket('ws://localhost:8080');
+
+        // Evento: conexão aberta
+        socket.onopen = () => {
+            console.log("Conexão WebSocket estabelecida!");
+        };
+
+        // Evento: mensagem recebida do servidor
+        socket.onmessage = (event) => {
+            const li = document.createElement('li');
+            li.textContent = event.data;
+            messages.appendChild(li);
+        };
+
+        // Evento: erro
+        socket.onerror = (error) => {
+            console.error("Erro no WebSocket:", error);
+        };
+
+        // Enviar mensagem ao servidor
+        messageForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const message = messageInput.value;
+            socket.send(message);
+            messageInput.value = '';
+        });
+    </script>
+</body>
+</html>
