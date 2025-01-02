@@ -6,7 +6,7 @@ const server = new WebSocket.Server({ port: 8080 });
 const clients = new Set();
 
 server.on('connection', (socket, req) => {
-    const clientIP = req.socket.remoteAddress;
+    const clientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     console.log(`Novo cliente conectado! IP: ${clientIP}`);
     clients.add(socket);
 
