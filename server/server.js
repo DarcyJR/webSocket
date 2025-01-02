@@ -11,7 +11,7 @@ server.on('connection', (socket) => {
 
     // Mensagem recebida do cliente
     socket.on('message', (message) => {
-        console.log("Mensagem recebida:", message);
+        console.log("Mensagem recebida:", message.toString());
 
         // Enviar a mensagem para todos os clientes conectados
         for (const client of clients) {
