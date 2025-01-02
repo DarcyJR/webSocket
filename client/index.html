@@ -77,7 +77,8 @@
         const messageForm = document.getElementById('messageForm');
         const messageInput = document.getElementById('messageInput');
 
-        const socket = new WebSocket('ws://localhost:8080');
+        const socket = new WebSocket('ws://websocket-production-7f27.up.railway.app:8080');
+        //const socket = new WebSocket('ws://localhost:8080');
 
         // Evento: conexão aberta
         socket.onopen = () => {
